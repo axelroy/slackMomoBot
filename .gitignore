@@ -1,0 +1,10 @@
+bot_token.py
+pip-selfcheck.json
+pyenv.cfg
+requierements.txt
+run.bat
+testpollmanager.py
+Scripts/
+Lib/
+Include/
+__pycache__/
