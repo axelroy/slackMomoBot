@@ -89,9 +89,9 @@ class PollManager():
         self.poll_list[title] = poll
 
         if question:
-            poll.set_question(question)
+            poll[1].set_question(question)
         if choices:
-            poll.set_choices(choices)
+            poll[1].set_choices(choices)
 
         return True, "The poll \""+title+"\" has been created"
 
