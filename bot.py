@@ -15,22 +15,18 @@ DEBUG = True
 from bot_token import TOKEN
 RUNNING = True
 
-BOT_TAG ="<@U147096E6>: "
-
 async def answer(user_token, message):
     data = {"token": TOKEN, "channel": user_token,"text": message}
     await api_call("chat.postMessage", data, TOKEN)
 
 
-async def consumer(message):
-    global BOT_TAG
+async def consumer(message, rtm):
     """Display the message."""
-    #print("message user:", message.get('user'))
 
+    BOT_TAG = '<@' + rtm['self']['id'] + '>: '
     message_user = message.get('user')
     message_contenant = message.get('text');
-
-    #print(message.get('text')[len(BOT_ID)+4:])
+    
     """Check if the bot is conserned by the message"""
     if message.get('type') == 'message' and message_user != None :
         #print(BOT_TAG)
@@ -39,24 +35,17 @@ async def consumer(message):
 
 
 async def bot(token=TOKEN):
+
     """Create a bot that joins Slack."""
     rtm = await api_call("rtm.start")
     assert rtm['ok'], "Error connecting to RTM."
-
-    #global BOT_TAG
-    #BOT_TAG = '<@' + rtm['self']['id'] + '>: '
 
     async with aiohttp.ClientSession() as session:
         async with session.ws_connect(rtm["url"]) as ws:
             async for msg in ws:
                 assert msg.tp == aiohttp.MsgType.text
                 message = json.loads(msg.data)
-
-                #print(message)
-                #my_self = rtm['self']['id']
-                #print(my_self)
-                #print(rtm['self']['name'])
-                asyncio.ensure_future(consumer(message))
+                asyncio.ensure_future(consumer(message, rtm))
 
 def stop():
     """Gracefully stop the bot."""
@@ -84,10 +73,6 @@ def parse_command(message, user):
 
     poll = args[1]
     data = u" ".join(args[2:]) if len(args) >= 3 else ""
-
-    print(data)
-
-
 
     if command in u"create" :
         return poll_manager.create_poll(poll, user, question=data)
