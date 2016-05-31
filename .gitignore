@@ -1,6 +1,6 @@
 bot_token.py
 pip-selfcheck.json
-pyenv.cfg
+pyvenv.cfg
 requierements.txt
 run.bat
 testpollmanager.py
