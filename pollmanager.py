@@ -76,7 +76,29 @@ class PollManager():
         self.poll_list = {}
 
     def help(self):
-        return True, "[command] [poll] [arg]"
+        show = []
+        show.append("Help :")
+        show.append("\n syntaxe : @momobot: [commande] [poll_title] [args]")
+        show.append("\n ")
+        show.append("\n Commande list :")
+        show.append("\n    create --> create a new poll. ")
+        show.append("\n         Ex: @momobot: create love love me?")
+        show.append("\n    show --> show a specific poll.")
+        show.append("\n         Ex: @momobot: show love")
+        show.append("\n    question --> you can change the question.")
+        show.append("\n         Ex: @momobot: question love do you love me???")
+        show.append("\n    choices --> to set answer posibilites(split with ;)")
+        show.append("\n         Ex: @momobot: choices love yes!;no!;maybe")
+        show.append("\n    start --> to lunch your poll you can answer only if the poll is lunch.")
+        show.append("\n         Ex: @momobot: start love")
+        show.append("\n    answer --> vote a choice by giving is id in arguments.")
+        show.append("\n         Ex: @momobot: answer love 2")
+        show.append("\n    close --> stop the poll that nobody can answer anymore.")
+        show.append("\n         Ex: @momobot: close love")
+        show.append("\n    remove --> destroy a specific poll.")
+        show.append("\n         Ex: @momobot: remove love")
+
+        return True, "".join(show)
 
     def create_poll(self, title, user, **kwargs):
         if title in self.poll_list:
