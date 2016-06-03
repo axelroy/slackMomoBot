@@ -14,9 +14,9 @@ from poll import Poll
 
 def check_user_decorator(f):
     def _f(self, title, user, **kwargs):
-        owner = self.poll_list.get(title, None)[0]
+        poll = self.poll_list.get(title, None)
 
-        if owner != user:
+        if owner != poll.user:
             return "You have not the right to edit this poll"
 
         return f(self, title, user, **kwargs)
@@ -107,13 +107,13 @@ class PollManager():
         question = kwargs.get("question", "")
         choices = kwargs.get("choices", [])
 
-        poll = (user, Poll(title))
+        poll = Poll(title, user)
         self.poll_list[title] = poll
 
         if question:
-            poll[1].set_question(question)
+            poll.set_question(question)
         if choices:
-            poll[1].set_choices(choices)
+            poll.set_choices(choices)
 
         return "The poll \""+title+"\" has been created"
 
@@ -128,9 +128,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def set_question(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
-        poll[1].set_question(kwargs["question"])
+        poll.set_question(kwargs["question"])
 
         return "The question has been update"
 
@@ -138,7 +138,7 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def set_choices(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
         poll.set_choices(kwargs["choices"])
 
@@ -147,7 +147,7 @@ class PollManager():
 
     @check_poll_exist_decorator
     def answer_poll(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
         try:
             number = int(kwargs["answer"])
@@ -162,7 +162,7 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def close_poll(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
         if poll.close():
             return "The poll \""+title+"\" has been closed"
@@ -173,7 +173,7 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def start_poll(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
         if poll.start():
             return"The poll \""+title+"\" has been started"
@@ -183,7 +183,7 @@ class PollManager():
 
     @check_poll_exist_decorator
     def show_poll(self, title, user, **kwargs):
-        poll = self.poll_list.get(title, None)[1]
+        poll = self.poll_list.get(title, None)
 
         show = []
         show.append("Poll : ")

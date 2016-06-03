@@ -31,7 +31,7 @@ async def consumer(message, rtm):
     if message.get('type') == 'message' and message_user != None :
         #print(BOT_TAG)
         if BOT_TAG == message_contenant[:len(BOT_TAG)] :
-            await answer(message.get('channel'), parse_command(message_contenant[len(BOT_TAG):], message_user)[1])
+            await answer(message.get('channel'), parse_command(message_contenant[len(BOT_TAG):], message_user))
 
 
 async def bot(token=TOKEN):
@@ -60,6 +60,7 @@ def stop():
 def parse_command(message, user):
     args = [c for c in message.split(' ') if c]
     command = args[0]
+    print(command)
 
     if command in "help" :
         return poll_manager.help()

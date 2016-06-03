@@ -16,8 +16,9 @@ class Poll():
     3) Closed : answers are closed, can get the result
     """
 
-    def __init__(self, title):
+    def __init__(self, title, user):
         self._title = title
+        self.user = user
         self._choices = []
         self._answers = {}
         self._closed = False
