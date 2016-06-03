@@ -1,4 +1,6 @@
-# slackMomoBot
-Bot for Slack in Python. 
+slackMomoBot
+============
+
+Slackbot in python.  
 
 This bot permits to create and manage polls from Slack.
