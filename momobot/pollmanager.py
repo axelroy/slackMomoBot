@@ -107,7 +107,7 @@ class PollManager():
         poll = Poll(title, user)
         self.poll_list[title] = poll
 
-        poll.set_question(kwargs["question"])
+        poll.question = kwargs["question"]
 
         #set basic choices
         poll.set_choices([":-1:",":+1:"])
@@ -127,7 +127,7 @@ class PollManager():
     def set_question(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
 
-        poll.set_question(kwargs["question"])
+        poll.question = kwargs["question"]
 
         return "The question has been update"
 

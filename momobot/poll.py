@@ -23,16 +23,7 @@ class Poll():
         self._answers = {}
         self._closed = False
         self._started = False
-        self._question = ""
-
-    def set_question(self, question):
-        if not self._started:
-            self._question = question
-            return True
-        return False
-
-    def get_question(self):
-        return self._question
+        self.question = ""
 
     def set_choices(self, choices_list):
         if not self._started :
