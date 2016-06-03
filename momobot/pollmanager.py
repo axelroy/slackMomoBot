@@ -16,7 +16,7 @@ def check_user_decorator(f):
     def _f(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
 
-        if owner != poll.user:
+        if user != poll.user:
             return "You have not the right to edit this poll"
 
         return f(self, title, user, **kwargs)
@@ -145,12 +145,13 @@ class PollManager():
     @check_poll_exist_decorator
     def answer_poll(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
-
         try:
-            number = int(kwargs["answer"])
-
-            if poll.set_answer(user, number):
-                return "Your answer has been registered"
+            if not poll._closed and poll._started:
+                if number in range(1, len(poll._choices)+1):
+                    poll._answers[user] = int(kwargs["answer"])
+                    return "Your answer has been registered"
+                else :
+                    return "Choose in the range of possible choices"
             else:
                 return "You can not answer to poll not started or closed"
         except ValueError:
@@ -186,7 +187,7 @@ class PollManager():
         show.append("Poll : ")
         show.append(title)
         show.append("\n - Question : ")
-        show.append(poll.get_question())
+        show.append(poll.question)
         show.append("\n - Choices : ")
         show.append(_create_choices_string(poll))
         show.append("\n - Result : ")

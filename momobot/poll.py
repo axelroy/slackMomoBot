@@ -36,16 +36,6 @@ class Poll():
     def get_choices(self):
         return self._choices
 
-    def set_answer(self, user_name, number):
-        if not self._closed and self._started:
-            if number in range(1, len(self._choices)+1):
-                self._answers[user_name] = number
-                return True
-        return False
-
-    def get_answer(self, user_name):
-        pass
-
     def close(self):
         if self._started:
             self._closed = True
