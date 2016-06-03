@@ -123,6 +123,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def remove_poll(self, title, user, **kwargs):
+        '''
+        Removes a poll with the parameters Title : User
+        '''
         self.poll_list.pop(title, None)
 
         return "The poll \""+title+"\" has been deleted"
@@ -131,6 +134,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def set_question(self, title, user, **kwargs):
+        '''
+        Permits to set the questions given by the user.
+        '''
         poll = self.poll_list.get(title, None)
 
         poll.question = kwargs["question"]
@@ -141,6 +147,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def set_choices(self, title, user, **kwargs):
+        '''
+        Permits to set the choices that the voter can choose.
+        '''
         poll = self.poll_list.get(title, None)
 
         poll.set_choices(kwargs["choices"])
@@ -150,6 +159,9 @@ class PollManager():
 
     @check_poll_exist_decorator
     def answer_poll(self, title, user, **kwargs):
+        '''
+        Allows the user to answer to a poll.
+        '''
         poll = self.poll_list.get(title, None)
         try:
             if not poll._closed and poll._started:
@@ -166,6 +178,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def close_poll(self, title, user, **kwargs):
+        '''
+        Close the given poll.
+        '''
         poll = self.poll_list.get(title, None)
 
         if poll.close():
@@ -177,6 +192,9 @@ class PollManager():
     @check_poll_exist_decorator
     @check_user_decorator
     def start_poll(self, title, user, **kwargs):
+        '''
+        Open the given poll.
+        '''
         poll = self.poll_list.get(title, None)
 
         if poll.start():
@@ -187,6 +205,9 @@ class PollManager():
 
     @check_poll_exist_decorator
     def show_poll(self, title, user, **kwargs):
+        '''
+        Presents the given poll to the client.
+        '''
         poll = self.poll_list.get(title, None)
 
         show = []
