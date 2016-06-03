@@ -12,7 +12,6 @@ from collections import Counter
 #   DECORATORS
 #=============================================================
 
-
 def check_user_decorator(f):
     def _f(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
@@ -69,17 +68,21 @@ def _create_result_string(poll):
 
 
 class PollManager():
-    """
+    '''
     Manage the the poll relative to user.
 
     All methods provide a output with a boolean (if the method succeded) and
     a string (which describe the error or the success)
-    """
+    '''
 
     def __init__(self):
         self.poll_list = {}
 
     def help(self):
+        '''
+        Provides help to the user.
+        '''
+
         show = []
         show.append("Help :")
         show.append("\n syntaxe : @momobot: [commande] [poll_title] [args]")
@@ -105,6 +108,9 @@ class PollManager():
         return True, "".join(show)
 
     def create_poll(self, title, user, **kwargs):
+        '''
+        Creates a poll with the parameters Title : User
+        '''
         if title in self.poll_list:
             return "The poll already exist, remove it before"
 
