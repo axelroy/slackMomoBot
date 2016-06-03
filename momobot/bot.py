@@ -26,12 +26,12 @@ async def consumer(message, rtm):
     BOT_TAG = '<@' + rtm['self']['id'] + '>: '
     message_user = message.get('user')
     message_contenant = message.get('text');
-    
+
     """Check if the bot is conserned by the message"""
     if message.get('type') == 'message' and message_user != None :
         #print(BOT_TAG)
         if BOT_TAG == message_contenant[:len(BOT_TAG)] :
-            await answer(message.get('channel'), parse_command(message_contenant[len(BOT_TAG):], message_user)[1])
+            await answer(message.get('channel'), parse_command(message_contenant[len(BOT_TAG):], message_user))
 
 
 async def bot(token=TOKEN):
@@ -58,47 +58,44 @@ def stop():
 #=============================================================
 
 def parse_command(message, user):
-    args = [c for c in message.split(u' ') if c]
+    args = [c for c in message.split(' ') if c]
     command = args[0]
+    print(command)
 
-    if command in u"help" :
+    if command in "help" :
         return poll_manager.help()
 
-    if command in u"killyourselfbot" :
-        stop()
-        return False;
-
     if len(args) < 2:
-        return False, "Not enough arguments [command] [poll] [arg(if command need it)]"
+        return "Not enough arguments [command] [poll] [arg(if command need it)]"
 
     poll = args[1]
-    data = u" ".join(args[2:]) if len(args) >= 3 else ""
+    data = " ".join(args[2:]) if len(args) >= 3 else ""
 
-    if command in u"create" :
+    if command in "create" :
         return poll_manager.create_poll(poll, user, question=data)
 
-    if command in u"question" :
+    if command in "question" :
         return poll_manager.set_question(poll, user, question=data)
 
-    if command in u"choices" :
-        return poll_manager.set_choices(poll, user, choices=data.split(u";"))
+    if command in "choices" :
+        return poll_manager.set_choices(poll, user, choices=data.split(";"))
 
-    if command in u"answer" :
+    if command in "answer" :
         return poll_manager.answer_poll(poll, user, answer=data)
 
-    if command in u"close" :
+    if command in "close" :
         return poll_manager.close_poll(poll, user)
 
-    if command in u"start" :
+    if command in "start" :
         return poll_manager.start_poll(poll, user)
 
-    if command in u"show" :
+    if command in "show" :
         return poll_manager.show_poll(poll, user)
 
-    if command in u"remove" :
+    if command in "remove" :
         return poll_manager.remove_poll(poll, user)
 
-    return False, "The command \""+command+"\" does not exit"
+    return "The command \""+command+"\" does not exit"
 
 
 #=============================================================

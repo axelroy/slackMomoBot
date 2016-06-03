@@ -15,22 +15,14 @@ class Poll():
     3) Closed : answers are closed, can get the result
     '''
 
-    def __init__(self, title):
+    def __init__(self, title, user):
         self._title = title
+        self.user = user
         self._choices = []
         self._answers = {}
         self._closed = False
         self._started = False
-        self._question = ""
-
-    def set_question(self, question):
-        if not self._started:
-            self._question = question
-            return True
-        return False
-
-    def get_question(self):
-        return self._question
+        self.question = ""
 
     def set_choices(self, choices_list):
         if not self._started :
@@ -42,16 +34,6 @@ class Poll():
 
     def get_choices(self):
         return self._choices
-
-    def set_answer(self, user_name, number):
-        if not self._closed and self._started:
-            if number in range(1, len(self._choices)+1):
-                self._answers[user_name] = number
-                return True
-        return False
-
-    def get_answer(self, user_name):
-        pass
 
     def close(self):
         if self._started:
