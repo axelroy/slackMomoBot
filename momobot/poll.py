@@ -1,6 +1,3 @@
-from collections import Counter
-
-
 #=============================================================
 #   CLASSES
 #=============================================================
@@ -17,43 +14,10 @@ class Poll():
     """
 
     def __init__(self, title, user):
-        self._title = title
+        self.title = title
         self.user = user
-        self._choices = []
-        self._answers = {}
-        self._closed = False
-        self._started = False
+        self.choices = []
+        self.answers = {}
+        self.closed = False
+        self.started = False
         self.question = ""
-
-    def set_choices(self, choices_list):
-        if not self._started :
-            # force all value to be unique
-            choices_list = set(choices_list)
-            self._choices = list(choices_list)
-            return True
-        return False
-
-    def get_choices(self):
-        return self._choices
-
-    def close(self):
-        if self._started:
-            self._closed = True
-            return True
-        return False
-
-    def is_closed(self):
-        return self._closed
-
-    def start(self):
-        if len(self._choices) >= 2:
-            self._started = True
-            return True
-        return False
-
-    def is_started(self):
-        return self._started
-
-    def get_result(self):
-        c = Counter(self._answers.values())
-        return [(self._choices[x[0]-1],x[1])  for x in c.most_common()];

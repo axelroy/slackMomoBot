@@ -5,6 +5,7 @@
 
 
 from poll import Poll
+from collections import Counter
 
 
 #=============================================================
@@ -44,7 +45,7 @@ def check_poll_exist_decorator(f):
 def _create_choices_string(poll):
     i = 1
     l = []
-    for c in poll.get_choices():
+    for c in poll.choices:
         l.append("\n  "+str(i)+") "+c)
         i += 1
     return "".join(l)
@@ -53,7 +54,10 @@ def _create_choices_string(poll):
 def _create_result_string(poll):
     i = 1
     l = []
-    for r in poll.get_result():
+    c = Counter(poll.answers.values())
+    c_ordered = [(poll.choices[x[0]-1],x[1])  for x in c.most_common()]
+
+    for r in c_ordered:
         l.append("\n  "+str(i)+") "+r[0]+" (x"+str(r[1])+")")
         i += 1
     return "".join(l)
@@ -110,7 +114,7 @@ class PollManager():
         poll.question = kwargs["question"]
 
         #set basic choices
-        poll.set_choices([":-1:",":+1:"])
+        poll.choices = [":+1:",":-1:"]
 
         return "The poll \""+title+"\" has been created"
 
@@ -137,18 +141,24 @@ class PollManager():
     def set_choices(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
 
-        poll.set_choices(kwargs["choices"])
+        if not poll.started :
+            # force all value to be unique
+            choices_list = set(kwargs["choices"])
+            poll.choices = list(choices_list)
+            return "The choices have been added"
 
-        return "The choices have been added"
+        return "you can't change choices since the poll is started"
+
 
 
     @check_poll_exist_decorator
     def answer_poll(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
         try:
-            if not poll._closed and poll._started:
-                if number in range(1, len(poll._choices)+1):
-                    poll._answers[user] = int(kwargs["answer"])
+            if not poll.closed and poll.started:
+                number = int(kwargs["answer"])
+                if number in range(1, len(poll.choices)+1):
+                    poll.answers[user] = number
                     return "Your answer has been registered"
                 else :
                     return "Choose in the range of possible choices"
@@ -162,7 +172,7 @@ class PollManager():
     def close_poll(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
 
-        if poll.close():
+        if not poll.started:
             return "The poll \""+title+"\" has been closed"
         else:
             return "Can not close a poll which is not started"
@@ -173,7 +183,8 @@ class PollManager():
     def start_poll(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)
 
-        if poll.start():
+        if not poll.started:
+            poll.started = True
             return"The poll \""+title+"\" has been started"
         else:
             return "Not enough choices for start"
@@ -193,6 +204,6 @@ class PollManager():
         show.append("\n - Result : ")
         show.append(_create_result_string(poll))
         show.append("\n - Status : ")
-        show.append("Not start" if not poll.is_started() else "In progress" if not poll.is_closed() else "Closed")
+        show.append("Not start" if not poll.started else "In progress" if not poll.closed else "Closed")
 
         return "".join(show)
