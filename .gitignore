@@ -8,3 +8,6 @@ Scripts/
 Lib/
 Include/
 __pycache__/
+build/
+make.bat
+Makefile
