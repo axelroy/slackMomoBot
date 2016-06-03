@@ -78,7 +78,7 @@ def parse_command(message, user):
         return poll_manager.set_question(poll, user, question=data)
 
     if command in "choices" :
-        return poll_manager.set_choices(poll, user, choices=data.split(u";"))
+        return poll_manager.set_choices(poll, user, choices=data.split(";"))
 
     if command in "answer" :
         return poll_manager.answer_poll(poll, user, answer=data)

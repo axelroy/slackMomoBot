@@ -104,16 +104,13 @@ class PollManager():
         if title in self.poll_list:
             return "The poll already exist, remove it before"
 
-        question = kwargs.get("question", "")
-        choices = kwargs.get("choices", [])
-
         poll = Poll(title, user)
         self.poll_list[title] = poll
 
-        if question:
-            poll.set_question(question)
-        if choices:
-            poll.set_choices(choices)
+        poll.set_question(kwargs["question"])
+
+        #set basic choices
+        poll.set_choices([":-1:",":+1:"])
 
         return "The poll \""+title+"\" has been created"
 
