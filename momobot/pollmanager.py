@@ -17,7 +17,7 @@ def check_user_decorator(f):
         owner = self.poll_list.get(title, None)[0]
 
         if owner != user:
-            return False, "You have not the right to edit this poll"
+            return "You have not the right to edit this poll"
 
         return f(self, title, user, **kwargs)
 
@@ -29,7 +29,7 @@ def check_poll_exist_decorator(f):
         user_poll = self.poll_list.get(title, None)
 
         if not user_poll:
-            return False, "The poll \""+title+"\" does not exist"
+            return "The poll \""+title+"\" does not exist"
 
         return f(self, title, user, **kwargs)
 
@@ -102,7 +102,7 @@ class PollManager():
 
     def create_poll(self, title, user, **kwargs):
         if title in self.poll_list:
-            return False, "The poll already exist, remove it before"
+            return "The poll already exist, remove it before"
 
         question = kwargs.get("question", "")
         choices = kwargs.get("choices", [])
@@ -115,14 +115,14 @@ class PollManager():
         if choices:
             poll[1].set_choices(choices)
 
-        return True, "The poll \""+title+"\" has been created"
+        return "The poll \""+title+"\" has been created"
 
     @check_poll_exist_decorator
     @check_user_decorator
     def remove_poll(self, title, user, **kwargs):
         self.poll_list.pop(title, None)
 
-        return True, "The poll \""+title+"\" has been deleted"
+        return "The poll \""+title+"\" has been deleted"
 
 
     @check_poll_exist_decorator
@@ -130,9 +130,9 @@ class PollManager():
     def set_question(self, title, user, **kwargs):
         poll = self.poll_list.get(title, None)[1]
 
-        poll.set_question(kwargs["question"])
+        poll[1].set_question(kwargs["question"])
 
-        return True, "The question has been update"
+        return "The question has been update"
 
 
     @check_poll_exist_decorator
@@ -142,7 +142,7 @@ class PollManager():
 
         poll.set_choices(kwargs["choices"])
 
-        return True, "The choices have been added"
+        return "The choices have been added"
 
 
     @check_poll_exist_decorator
@@ -153,11 +153,11 @@ class PollManager():
             number = int(kwargs["answer"])
 
             if poll.set_answer(user, number):
-                return True, "Your answer has been registered"
+                return "Your answer has been registered"
             else:
-                return False, "You can not answer to poll not started or closed"
+                return "You can not answer to poll not started or closed"
         except ValueError:
-            return False, "You must enter the number of the choice :" + _create_choices_string(poll)
+            return "You must enter the number of the choice :" + _create_choices_string(poll)
 
     @check_poll_exist_decorator
     @check_user_decorator
@@ -165,9 +165,9 @@ class PollManager():
         poll = self.poll_list.get(title, None)[1]
 
         if poll.close():
-            return True, "The poll \""+title+"\" has been closed"
+            return "The poll \""+title+"\" has been closed"
         else:
-            return False, "Can not close a poll which is not started"
+            return "Can not close a poll which is not started"
 
 
     @check_poll_exist_decorator
@@ -176,9 +176,9 @@ class PollManager():
         poll = self.poll_list.get(title, None)[1]
 
         if poll.start():
-            return True, "The poll \""+title+"\" has been started"
+            return"The poll \""+title+"\" has been started"
         else:
-            return False, "Not enough choices for start"
+            return "Not enough choices for start"
 
 
     @check_poll_exist_decorator
@@ -197,4 +197,4 @@ class PollManager():
         show.append("\n - Status : ")
         show.append("Not start" if not poll.is_started() else "In progress" if not poll.is_closed() else "Closed")
 
-        return True, "".join(show)
+        return "".join(show)

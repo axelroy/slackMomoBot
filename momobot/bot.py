@@ -64,10 +64,6 @@ def parse_command(message, user):
     if command in "help" :
         return poll_manager.help()
 
-    if command in "killyourselfbot" :
-        stop()
-        return
-
     if len(args) < 2:
         return "Not enough arguments [command] [poll] [arg(if command need it)]"
 
