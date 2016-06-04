@@ -54,6 +54,7 @@ def _create_result_string(poll):
     i = 1
     l = []
     c = Counter(poll.answers.values())
+    #Classement par ordre de fréquence
     c_ordered = [(poll.choices[x[0]-1],x[1])  for x in c.most_common()]
 
     for r in c_ordered:
