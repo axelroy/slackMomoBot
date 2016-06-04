@@ -125,8 +125,8 @@ class PollManager():
 
         return "The poll \""+title+"\" has been created"
 
-#    @check_poll_exist_decorator
-#    @check_user_decorator
+    @check_poll_exist_decorator
+    @check_user_decorator
     def remove_poll(self, title, user, **kwargs):
         '''
         Removes a poll with the parameters Title : User
@@ -136,8 +136,8 @@ class PollManager():
         return "The poll \""+title+"\" has been deleted"
 
 
-#    @check_poll_exist_decorator
-#    @check_user_decorator
+    @check_poll_exist_decorator
+    @check_user_decorator
     def set_question(self, title, user, **kwargs):
         '''
         Permits to set the questions given by the user.
@@ -149,8 +149,8 @@ class PollManager():
         return "The question has been update"
 
 
-#    @check_poll_exist_decorator
-#    @check_user_decorator
+    @check_poll_exist_decorator
+    @check_user_decorator
     def set_choices(self, title, user, **kwargs):
         '''
         Permits to set the choices that the voter can choose.
@@ -167,7 +167,7 @@ class PollManager():
 
 
 
-#    @check_poll_exist_decorator
+    @check_poll_exist_decorator
     def answer_poll(self, title, user, **kwargs):
         '''
         Allows the user to answer to a poll.
@@ -186,8 +186,8 @@ class PollManager():
         except ValueError:
             return "You must enter the number of the choice :" + _create_choices_string(poll)
 
-#    @check_poll_exist_decorator
-#    @check_user_decorator
+    @check_poll_exist_decorator
+    @check_user_decorator
     def close_poll(self, title, user, **kwargs):
         '''
         Close the given poll.
@@ -200,8 +200,8 @@ class PollManager():
             return "Can not close a poll which is not started"
 
 
-#    @check_poll_exist_decorator
-#    @check_user_decorator
+    @check_poll_exist_decorator
+    @check_user_decorator
     def start_poll(self, title, user, **kwargs):
         '''
         Open the given poll.
@@ -217,7 +217,7 @@ class PollManager():
 
     def show_all_polls(self):
         '''
-        Presents all the polls to the client.
+        Presents all the polls to the client the given poll to the client.
         '''
 
         if not self.poll_list :
@@ -238,7 +238,7 @@ class PollManager():
         return "".join(show)
 
 
-#    @check_poll_exist_decorator
+    @check_poll_exist_decorator
     def show_poll(self, title, user, **kwargs):
         '''
         Presents the given poll to the client.
