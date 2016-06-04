@@ -1,4 +1,4 @@
-"""Sample Slack ping bot using asyncio and websockets."""
+'''Communication module with slack. Make the interface beetween Slack and our classes'''
 import asyncio
 import json
 import sys
@@ -16,12 +16,13 @@ from bot_token import TOKEN
 RUNNING = True
 
 async def answer(user_token, message):
+    '''Answer the message in the chat to the client'''
     data = {"token": TOKEN, "channel": user_token,"text": message}
     await api_call("chat.postMessage", data, TOKEN)
 
 
 async def consumer(message, rtm):
-    """Display the message."""
+    '''Display the message.'''
 
     BOT_TAG = '<@' + rtm['self']['id'] + '>: '
     message_user = message.get('user')
@@ -36,7 +37,7 @@ async def consumer(message, rtm):
 
 async def bot(token=TOKEN):
 
-    """Create a bot that joins Slack."""
+    '''Create a bot that joins Slack.'''
     rtm = await api_call("rtm.start")
     assert rtm['ok'], "Error connecting to RTM."
 
@@ -48,7 +49,7 @@ async def bot(token=TOKEN):
                 asyncio.ensure_future(consumer(message, rtm))
 
 def stop():
-    """Gracefully stop the bot."""
+    '''Gracefully stop the bot.'''
     global RUNNING
     RUNNING = False
     print("Stopping... closing connections.")
@@ -58,6 +59,7 @@ def stop():
 #=============================================================
 
 def parse_command(message, user):
+    '''Parsing of the command'''
     args = [c for c in message.split(' ') if c]
     command = args[0]
     print(command)
