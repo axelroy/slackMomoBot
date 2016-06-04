@@ -215,6 +215,29 @@ class PollManager():
             return "Not enough choices for start"
 
 
+    def show_all_polls(self):
+        '''
+        Presents the given poll to the client.
+        '''
+
+        if not self.poll_list :
+            return "there is no created poll at the moment"
+
+        show = []
+        show.append("Polls : ")
+
+        for current_poll in self.poll_list :
+            show.append("\n     -  ")
+            show.append((self.poll_list.get(current_poll)).title)
+            show.append("(")
+            show.append("Not start" if not (self.poll_list.get(current_poll)).started else "In progress" if not (self.poll_list.get(current_poll)).closed else "Closed")
+            show.append(")")
+            show.append(" --> ")
+            show.append((self.poll_list.get(current_poll)).question)
+
+        return "".join(show)
+
+
     @check_poll_exist_decorator
     def show_poll(self, title, user, **kwargs):
         '''
