@@ -67,7 +67,7 @@ def parse_command(message, user):
     if command in "help" :
         return poll_manager.help()
 
-    if command in "showall" :
+    if command == "showall" :
         return poll_manager.show_all_polls()
 
     if len(args) < 2:
@@ -94,7 +94,7 @@ def parse_command(message, user):
     if command in "start" :
         return poll_manager.start_poll(poll, user)
 
-    if command in "show" :
+    if command == "show" :
         return poll_manager.show_poll(poll, user)
 
     if command in "remove" :
