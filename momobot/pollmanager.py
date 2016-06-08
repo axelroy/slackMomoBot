@@ -194,8 +194,12 @@ class PollManager():
         '''
         poll = self.poll_list.get(title, None)
 
-        if poll.started:
-            return "The poll \""+title+"\" has been closed"
+        if poll.started and not poll.closed:
+            poll.closed = True;
+            show = []
+            show.append("The poll \""+title+"\" has been closed \n")
+            show.append(show_poll(title, user, kwargs))
+            return "".join(show)
         else:
             return "Can not close a poll which is not started"
 
