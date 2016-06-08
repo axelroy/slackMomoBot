@@ -194,7 +194,7 @@ class PollManager():
         '''
         poll = self.poll_list.get(title, None)
 
-        if not poll.started:
+        if poll.started:
             return "The poll \""+title+"\" has been closed"
         else:
             return "Can not close a poll which is not started"
